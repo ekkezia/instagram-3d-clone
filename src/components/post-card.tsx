@@ -22,10 +22,6 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
     router.push(`/user/${user?.username as string}`);
   };
 
-  useEffect(() => {
-    console.log('user', post);
-  }, [post]);
-
   const [time, setTime] = useState<string>('');
 
   useEffect(() => {

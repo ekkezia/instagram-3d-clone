@@ -1,11 +1,13 @@
 'use client';
-
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Environment, Html, OrbitControls } from '@react-three/drei';
+import { Html, OrbitControls } from '@react-three/drei';
 import Model from './model';
 
 export default function ThreeDPostViewer({ postIdx }: { postIdx: number }) {
+  useEffect(() => {
+    console.log('post id', postIdx)
+  }, [postIdx])
 
   return (
     <div className="relative aspect-square w-full">
@@ -24,11 +26,10 @@ export default function ThreeDPostViewer({ postIdx }: { postIdx: number }) {
             {/* soft ambient + hemisphere for better fill */}
             <ambientLight intensity={0.1} />
             <hemisphereLight args={[0xffffee, 0x080820, 0.3]} />
-            <directionalLight position={[5, 10, 7]} intensity={0.5} castShadow />
+            <directionalLight position={[5, 10, 7]} intensity={0.8} castShadow />
             {/* small point light to reduce deep shadowing */}
             <pointLight position={[0, 4, 2]} intensity={0.8} />
             {/* add an environment map so PBR materials render nicely */}
-            <Environment preset="studio" />
             <React.Suspense fallback={<Html center>Loading model...</Html>}>
               <Model path="/models/shahnaz.glb" animationIndex={0} />
             </React.Suspense>
