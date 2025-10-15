@@ -33,9 +33,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 min-h-screen flex items-center justify-center`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 min-h-dvh flex items-center justify-center`}
       >
-        <div className="max-w-md mx-auto bg-white h-screen md:h-[740px] overflow-y-scroll relative md:rounded-2xl shadow-xl">
+        <div className="w-md mx-auto bg-white h-dvh md:h-[740px] overflow-y-scroll relative md:rounded-2xl shadow-xl">
           <Header />
           <main className="pb-16">
             <SupabaseDataProvider initialUserData={userData} initialPostData={postData}>

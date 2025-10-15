@@ -19,7 +19,7 @@ export default function Explore() {
   );
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-white min-h-dvh">
       {/* Search Header */}
       <div className="px-4 py-3 border-b border-gray-200 sticky top-16 bg-white z-10">
         <div className="relative">

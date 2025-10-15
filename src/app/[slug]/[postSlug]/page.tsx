@@ -37,7 +37,7 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
   }
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-white min-h-dvh">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
         <div className="flex items-center space-x-3">
