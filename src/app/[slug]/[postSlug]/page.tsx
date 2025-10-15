@@ -58,7 +58,17 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
       </div>
 
       {/* 3D Scene */}
-      <ThreeDPostViewer postIdx={post.object} />
+      {
+        post.object ? <ThreeDPostViewer postIdx={post.object} /> 
+          :
+          <div className="relative aspect-square">
+            <img
+              src={post.image as string}
+              alt="Post"
+              className="object-cover"
+            />
+          </div>
+      }
 
       {/* Actions and Details */}
       <div className="px-4 py-3">
@@ -80,7 +90,7 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
             </button>
-            <button className="p-1">
+            <button className="p-1 rotate-90">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
               </svg>

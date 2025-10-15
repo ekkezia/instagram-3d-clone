@@ -1,14 +1,10 @@
 'use client';
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Html, OrbitControls } from '@react-three/drei';
 import Model from './model';
 
-export default function ThreeDPostViewer({ postIdx }: { postIdx: number }) {
-  useEffect(() => {
-    console.log('post id', postIdx)
-  }, [postIdx])
-
+export default function ThreeDPostViewer({ postIdx = 0 }: { postIdx: number }) {
   return (
     <div className="relative aspect-square w-full">
       <Suspense 
@@ -31,7 +27,7 @@ export default function ThreeDPostViewer({ postIdx }: { postIdx: number }) {
             <pointLight position={[0, 4, 2]} intensity={0.8} />
             {/* add an environment map so PBR materials render nicely */}
             <React.Suspense fallback={<Html center>Loading model...</Html>}>
-              <Model path="/models/shahnaz.glb" animationIndex={0} />
+              <Model path="/models/shahnaz.glb" animationIndex={postIdx} />
             </React.Suspense>
             <OrbitControls />
           </Canvas>
