@@ -4,6 +4,9 @@ import { Canvas } from '@react-three/fiber';
 import { Html, OrbitControls } from '@react-three/drei';
 import Model from './model';
 
+const r2PublicUrl = process.env.REACT_APP_R2_PUBLIC_URL?.replace(/\/$/, '');
+const modelPath = r2PublicUrl ? `${r2PublicUrl}/models/shahnaz.glb` : '/models/shahnaz.glb';
+
 export default function ThreeDPostViewer({ postIdx = 0 }: { postIdx: number }) {
   return (
     <div className="relative aspect-square w-full">
@@ -27,7 +30,7 @@ export default function ThreeDPostViewer({ postIdx = 0 }: { postIdx: number }) {
             <pointLight position={[0, 4, 2]} intensity={0.8} />
             {/* add an environment map so PBR materials render nicely */}
             <React.Suspense fallback={<Html center>Loading model...</Html>}>
-              <Model path="/models/shahnaz.glb" animationIndex={postIdx} />
+              <Model path={modelPath} animationIndex={postIdx} />
             </React.Suspense>
             <OrbitControls />
           </Canvas>
