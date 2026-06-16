@@ -1,10 +1,18 @@
 import Profile from '../profile/page';
-import supabase from '@/utils/supabase/client';
+import getSupabase from '@/utils/supabase/client';
 
 export const revalidate = 60;
 
+type UserSlugRow = {
+  username: string;
+};
+
 export async function generateStaticParams(): Promise<{ slug: string }[]> {  
-  const { data: userData } = await supabase.from('instagram-clone-users').select().limit(100);
+  const supabase = getSupabase();
+  if (!supabase) return [];
+
+  const { data } = await supabase.from('instagram-clone-users').select('username').limit(100);
+  const userData = data as UserSlugRow[] | null;
   if (!userData) return [];
   return userData.map((user) => ({
     "slug": user.username,

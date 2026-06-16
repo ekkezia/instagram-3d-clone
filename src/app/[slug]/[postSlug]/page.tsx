@@ -1,17 +1,37 @@
 import ThreeDPostViewer from '@/components/three-d-post-viewer';
-import supabase from '@/utils/supabase/client';
+import getSupabase from '@/utils/supabase/client';
 import { parseCaption } from '@/utils/caption';
 import { formatTimeAgo } from '@/utils/time';
 
 export const revalidate = 60;
 
+type PostRow = {
+  id: string | number;
+  user_id: string | number;
+  image: string;
+  object?: number | null;
+  caption: string;
+  isLiked?: boolean;
+  created_at: string | Date;
+};
+
+type UserRow = {
+  id: string | number;
+  username: string;
+  avatar: string;
+};
+
 export async function generateStaticParams(): Promise<{ "postSlug": string }[]> {
-  const { data: postData } = await supabase.from('instagram-clone-posts').select().limit(100);
+  const supabase = getSupabase();
+  if (!supabase) return [];
+
+  const { data } = await supabase.from('instagram-clone-posts').select('id').limit(100);
+  const postData = data as PostRow[] | null;
 
   if (!postData) return []; 
 
   return postData.map((post) => ({
-    "postSlug": post.id,
+    "postSlug": String(post.id),
   }))
 }
 
@@ -20,13 +40,20 @@ interface PhotoPageProps {
 }
 
 export default async function PhotoPage({ params }: PhotoPageProps) {
-  const { data: postData } = await supabase.from('instagram-clone-posts').select().limit(100);
-  const { data: userData } = await supabase.from('instagram-clone-users').select().limit(100);
+  const supabase = getSupabase();
+  const { data: rawPostData } = supabase
+    ? await supabase.from('instagram-clone-posts').select().limit(100)
+    : { data: null };
+  const { data: rawUserData } = supabase
+    ? await supabase.from('instagram-clone-users').select().limit(100)
+    : { data: null };
+  const postData = rawPostData as PostRow[] | null;
+  const userData = rawUserData as UserRow[] | null;
 
   const { postSlug: id } = await params;
 
-  const post = postData?.find(p => p.id === id);
-  const user = userData?.find(user => user.id === post.user_id) || {};
+  const post = postData?.find((p) => String(p.id) === id);
+  const user = post ? userData?.find((user) => user.id === post.user_id) : undefined;
 
   if (!id || !user || !post) {
     return (

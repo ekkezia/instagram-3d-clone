@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import BottomNavigation from "@/components/bottom-navigation";
 import { SupabaseDataProvider } from '@/context/SupabaseDataContext';
-import supabase from '@/utils/supabase/client';
+import getSupabase from '@/utils/supabase/client';
 import Header from '@/components/Header';
 
 const geistSans = Geist({
@@ -27,8 +27,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   // server-side fetch of initial data for the provider
-  const { data: userData } = await supabase.from('instagram-clone-users').select().limit(100);
-  const { data: postData } = await supabase.from('instagram-clone-posts').select().limit(100);
+  const supabase = getSupabase();
+  const { data: userData } = supabase
+    ? await supabase.from('instagram-clone-users').select().limit(100)
+    : { data: null };
+  const { data: postData } = supabase
+    ? await supabase.from('instagram-clone-posts').select().limit(100)
+    : { data: null };
 
   return (
     <html lang="en">
